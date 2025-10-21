@@ -1,81 +1,104 @@
 // ==========================================
 // PROJECT 2: LOCAL FAVORITES TRACKER
-// LAB12: JavaScript Fundamentals
+// LAB13: Functions & DOM Manipulation
 // ==========================================
 
-console.log('JavaScript loaded successfully!');
-console.log('LAB12: Applying Variables and Objects');
+console.log('LAB13: Functions & DOM Manipulation');
 
-// Example: Creating a sample favorite place
-const sampleFavorite = {
-    name: 'Ampersand',
-    category: 'coffee',
-    rating: 4,
-    notes: 'Great study spot with fast wifi',
-    dateAdded: new Date().toLocaleDateString()
-};
+// Array to store all favorites (we'll use this in LAB14)
+let favorites = [];
 
-console.log('Sample Favorite Object:');
-console.log(sampleFavorite);
+// Get references to DOM elements
+const form = document.getElementById('add-favorite-form');
+const favoritesList = document.getElementById('favorites-list');
 
-// Practice: Display information about the sample favorite
-console.log('Place Name:', sampleFavorite.name);
-console.log('Category:', sampleFavorite.category);
-console.log('Rating:', sampleFavorite.rating, 'out of 5 stars');
-console.log('Notes:', sampleFavorite.notes);
-console.log('Date Added:', sampleFavorite.dateAdded);
+console.log('Form:', form);
+console.log('Favorites list container:', favoritesList);
+// Function to handle adding a new favorite
+function addFavorite(event) {
+    event.preventDefault();  // Prevent page reload
 
-// Build a formatted display message
-let displayMessage = sampleFavorite.name + ' (' + sampleFavorite.category + ') - ' +
-                     sampleFavorite.rating + '/5 stars';
-console.log('Display Format:', displayMessage);
+    console.log('Add Favorite button clicked!');
 
-// Check data types
-console.log('Data Types:');
-console.log('  name is a', typeof sampleFavorite.name);
-console.log('  rating is a', typeof sampleFavorite.rating);
+    // Step 1: Get values from form inputs
+    const nameInput = document.getElementById('name');
+    const categoryInput = document.getElementById('category');
+    const ratingInput = document.getElementById('rating');
+    const notesInput = document.getElementById('notes');
 
-console.log('Ready for LAB13: Functions & DOM Manipulation!');
+    const nameValue = nameInput.value;
+    const categoryValue = categoryInput.value;
+    const ratingValue = ratingInput.value;
+    const notesValue = notesInput.value;
 
-let rating1 = 5;
-let rating2 = 4;
-let rating3 = 5;
+    // Step 2: Log values to see what we captured
+    console.log('Name:', nameValue);
+    console.log('Category:', categoryValue);
+    console.log('Rating:', ratingValue);
+    console.log('Notes:', notesValue);
 
-let totalRating = rating1 + rating2 + rating3;
-let averageRating = totalRating / 3;
+    // Step 3: Create a favorite object (like LAB12!)
+    const newFavorite = {
+        name: nameValue,
+        category: categoryValue,
+        rating: ratingValue,
+        notes: notesValue,
+        dateAdded: new Date().toLocaleDateString()
+    };
 
-console.log('Total Rating:', totalRating);
-console.log('Average Rating:', averageRating);
-console.log('Average (rounded):', averageRating.toFixed(1));
+    console.log('Created favorite object:', newFavorite);
 
-let placeName = 'Starbucks';
-let category = 'coffee';
-let rating = 5;
-let notes = 'Great wifi';
+    // Step 4: Add to favorites array (for LAB14)
+    favorites.push(newFavorite);
+    console.log('Total favorites:', favorites.length);
+    console.log('All favorites:', favorites);
 
-// Create different display formats
-let format1 = placeName + ' - ' + rating + '/5';
-let format2 = category.toUpperCase() + ': ' + placeName;
-let format3 = '⭐'.repeat(rating) + ' ' + placeName;
+    // Step 5: Clear the form for next entry
+    form.reset();
+    console.log('Form reset - ready for next favorite!');
+}
+// Connect the addFavorite function to the form submit event
+form.addEventListener('submit', addFavorite);
 
-console.log(format1);
-console.log(format2);
-console.log(format3);
+console.log('Event listener attached - form is ready!');
+let container = document.getElementById('favorites-list');
+container.innerHTML = '<p>This is new HTML added by JavaScript!</p>';
+// Function to display all favorites on the page
+function displayFavorites() {
+    console.log('Displaying favorites...');
 
-let favorite4 = {
-    name: 'Buffalo Bros',
-    category: 'Fast food',  // Try: fitness, services, shopping
-    rating: 4,
-    notes: 'Close to campus, quick service'
-};
+    // Clear the current display
+    favoritesList.innerHTML = '';
 
-let favorite5 = {
-    name: 'Eatzis',
-    category: 'Lunch food',
-    rating: 5,
-    notes: 'Large selection, high quality'
-};
+    // Check if there are any favorites
+    if (favorites.length === 0) {
+        favoritesList.innerHTML = '<p class="empty-message">No favorites yet. Add your first favorite place above!</p>';
+        return;
+    }
 
-// Display both with formatted strings
-console.log(favorite4.name + ' (' + favorite4.category + ')');
-console.log(favorite5.name + ' (' + favorite5.category + ')');
+    // Loop through each favorite and create HTML
+favorites.forEach(function(favorite, index) {
+    // Create the star rating display
+    let starsDisplay = '⭐'.repeat(favorite.rating);
+
+    // Build the HTML for this favorite card
+    const cardHTML = `
+        <div class="favorite-card">
+            <h3>${favorite.name}</h3>
+            <span class="favorite-category">${favorite.category}</span>
+            <div class="favorite-rating">${starsDisplay} (${favorite.rating}/5)</div>
+            <p class="favorite-notes">${favorite.notes}</p>
+            <p class="favorite-date">Added: ${favorite.dateAdded}</p>
+            <div class="favorite-actions">
+                <button class="btn btn-danger" onclick="deleteFavorite(${index})">Delete</button>
+            </div>
+        </div>
+    `;
+
+    // Add this card to the favorites list
+    favoritesList.innerHTML += cardHTML;
+});
+    console.log('Displayed', favorites.length, 'favorite(s)');
+}
+// Display empty message when page first loads
+displayFavorites();
