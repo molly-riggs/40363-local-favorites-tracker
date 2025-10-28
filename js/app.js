@@ -83,7 +83,7 @@ function addFavorite(event) {
 
     console.log('Created favorite object:', newFavorite);
 
-    // Step 4: Add to favorites array (for LAB14)
+   // Step 4: Add to favorites array (for LAB14)
     favorites.push(newFavorite);
     console.log('Total favorites:', favorites.length);
     console.log('All favorites:', favorites);
@@ -92,6 +92,8 @@ function addFavorite(event) {
     form.reset();
     console.log('Form reset - ready for next favorite!');
 }
+// Step 6: Display the updated favorites list
+    displayFavorites();
 // Connect the addFavorite function to the form submit event
 form.addEventListener('submit', addFavorite);
 
