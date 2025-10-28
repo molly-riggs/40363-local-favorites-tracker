@@ -98,6 +98,8 @@ function addFavorite(event) {
 form.addEventListener('submit', addFavorite);
 
 console.log('Event listener attached - form is ready!');
+// Display empty message when page first loads
+displayFavorites();
 let container = document.getElementById('favorites-list');
 container.innerHTML = '<p>This is new HTML added by JavaScript!</p>';
 // Function to display all favorites on the page
