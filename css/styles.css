@@ -143,7 +143,20 @@ textarea {
     transform: translateY(0);
 }
 /* TODO LAB11: Add .btn and .btn-primary styles */
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
 
+.btn-danger:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+.btn-danger:active {
+    transform: translateY(0);
+}
 
 /* ==========================================
    SEARCH CONTROLS
