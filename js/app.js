@@ -34,7 +34,8 @@ function displayFavorites() {
 }
 
     console.log('Displayed', favorites.length, 'favorite(s)');
-}
+
+
 // Function to handle adding a new favorite
 function addFavorite(event) {
     event.preventDefault();  // Prevent page reload
