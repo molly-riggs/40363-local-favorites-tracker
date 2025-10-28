@@ -91,9 +91,9 @@ function addFavorite(event) {
     // Step 5: Clear the form for next entry
     form.reset();
     console.log('Form reset - ready for next favorite!');
-}
 // Step 6: Display the updated favorites list
     displayFavorites();
+}
 // Connect the addFavorite function to the form submit event
 form.addEventListener('submit', addFavorite);
 
