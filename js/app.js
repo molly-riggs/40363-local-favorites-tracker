@@ -11,6 +11,8 @@ let favorites = [];
 // Get references to DOM elements
 const form = document.getElementById('add-favorite-form');
 const favoritesList = document.getElementById('favorites-list');
+const searchInput = document.getElementById('search-input');
+const categoryFilter = document.getElementById('category-filter');
 // Function to save favorites to localStorage
 function saveFavorites() {
     try {
