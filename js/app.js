@@ -11,7 +11,36 @@ let favorites = [];
 // Get references to DOM elements
 const form = document.getElementById('add-favorite-form');
 const favoritesList = document.getElementById('favorites-list');
+// Function to save favorites to localStorage
+function saveFavorites() {
+    try {
+        localStorage.setItem('localFavorites', JSON.stringify(favorites));
+        console.log('Favorites saved to localStorage');
+        console.log('Saved', favorites.length, 'favorites');
+    } catch (error) {
+        console.error('Error saving to localStorage:', error);
+        alert('Unable to save favorites. Your browser may have storage disabled.');
+    }
+}
+// Function to load favorites from localStorage
+function loadFavorites() {
+    try {
+        const savedData = localStorage.getItem('localFavorites');
 
+        if (savedData) {
+            favorites = JSON.parse(savedData);
+            console.log('Favorites loaded from localStorage');
+            console.log('Loaded', favorites.length, 'favorites');
+        } else {
+            console.log('No saved favorites found');
+            favorites = [];
+        }
+    } catch (error) {
+        console.error('Error loading from localStorage:', error);
+        console.log('Starting with empty favorites array');
+        favorites = [];
+    }
+}
 console.log('Form:', form);
 console.log('Favorites list container:', favoritesList);
 // Function to display all favorites on the page
@@ -83,7 +112,10 @@ function addFavorite(event) {
 }
 // Connect the addFavorite function to the form submit event
 form.addEventListener('submit', addFavorite);
+    // Display updated list (resets filters)
+    displayFavorites();
 
+    console.log('Favorite added successfully!');      
 console.log('Event listener attached - form is ready!');
 // Display empty message when page first loads
 displayFavorites();
@@ -133,19 +165,57 @@ function deleteFavorite(index) {
     const favorite = favorites[index];
     const confirmDelete = confirm(`Are you sure you want to delete "${favorite.name}"?`);
 
-    if (confirmDelete) {
+      if (confirmDelete) {
         // Remove from array
         favorites.splice(index, 1);
         console.log('Favorite deleted. Total remaining:', favorites.length);
 
+        // Save to localStorage
+        saveFavorites();
+
         // Re-apply current search/filter
         searchFavorites();
+    }
+}
+// Function to clear all favorites
+function clearAllFavorites() {
+    // Confirm with user
+    const confirmClear = confirm('Are you sure you want to delete ALL favorites? This cannot be undone!');
+
+    if (confirmClear) {
+        // Clear the array
+        favorites = [];
+        console.log('All favorites cleared');
+
+        // Clear from localStorage
+        localStorage.removeItem('localFavorites');
+        console.log('localStorage cleared');
+
+        // Display empty state
+        displayFavorites();
+
+        alert('All favorites have been deleted.');
     } else {
-        console.log('Deletion cancelled by user');
+        console.log('Clear all cancelled by user');
     }
 }
     console.log('Displayed', favorites.length, 'favorite(s)');
 }
+    // Add to favorites array
+    favorites.push(newFavorite);
+    console.log('Total favorites:', favorites.length);
+
+    // Save to localStorage
+    saveFavorites();
+
+    // Clear the form
+    form.reset();
+
+    // Display updated list (resets filters)
+    displayFavorites();
+
+    console.log('Favorite added successfully!');
+
 // Function to search favorites by name or notes
 function searchFavorites() {
     // Get the search input value
@@ -210,7 +280,10 @@ function searchFavorites() {
         favoritesList.innerHTML += cardHTML;
     });
 }
-// Display empty message when page first loads
+// Load saved favorites from localStorage on startup
+loadFavorites();
+
+// Display the loaded favorites (or empty message)
 displayFavorites();
 // Connect search input to searchFavorites function
 const searchInput = document.getElementById('search-input');
@@ -221,3 +294,9 @@ const categoryFilter = document.getElementById('category-filter');
 categoryFilter.addEventListener('change', searchFavorites);
 
 console.log('Search and filter event listeners attached!');
+// Connect clear all button
+const clearAllBtn = document.getElementById('clear-all-btn');
+if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', clearAllFavorites);
+    console.log('Clear all button connected');
+}
