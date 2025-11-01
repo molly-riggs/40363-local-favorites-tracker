@@ -141,10 +141,13 @@ function deleteFavorite(index) {
     const favorite = favorites[index];
     const confirmDelete = confirm(`Are you sure you want to delete "${favorite.name}"?`);
 
-    if (confirmDelete) {
+        if (confirmDelete) {
         // Remove from array
         favorites.splice(index, 1);
         console.log('Favorite deleted. Total remaining:', favorites.length);
+
+        // Save to localStorage
+        saveFavorites();
 
         // Re-apply current search/filter
         searchFavorites();
@@ -158,7 +161,11 @@ function addFavorite(event) {
     event.preventDefault();  // Prevent page reload
 
     console.log('Add Favorite button clicked!');
+    // Display updated list (resets filters)
+    displayFavorites();
 
+    console.log('Favorite added successfully!');
+}
     // Get values from form inputs
     const nameInput = document.getElementById('name');
     const categoryInput = document.getElementById('category');
@@ -198,14 +205,27 @@ function addFavorite(event) {
     displayFavorites();
 
     console.log('Favorite added successfully!');
-}
 
-// Connect event listeners
-form.addEventListener('submit', addFavorite);
-searchInput.addEventListener('input', searchFavorites);
-categoryFilter.addEventListener('change', searchFavorites);
+    // Connect event listeners
+    form.addEventListener('submit', addFavorite);
+    searchInput.addEventListener('input', searchFavorites);
+    categoryFilter.addEventListener('change', searchFavorites);
 
 console.log('Event listeners attached - app is ready!');
+    // Add to favorites array
+    favorites.push(newFavorite);
+    console.log('Total favorites:', favorites.length);
+
+    // Save to localStorage
+    saveFavorites();
+
+    // Clear the form
+    form.reset();
+
+    // Display updated list (resets filters)
+    displayFavorites();
+
+    console.log('Favorite added successfully!');
 
 // Load saved favorites from localStorage on startup
 loadFavorites();
